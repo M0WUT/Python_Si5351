@@ -57,7 +57,7 @@ class Si5351_wut(object):
 	def disable_clock(self, clock):
 		if(clock > 7):
 			raise Exception("Attempted to access clock with a value of {:s}, this does not exist".format(clock))
-		#x = self.i2c.readU8(Si5351_OUTPUT_ENABLE_REG)
+		x = self.i2c.readU8(Si5351_OUTPUT_ENABLE_REG)
 		self.i2c.write8(Si5351_OUTPUT_ENABLE_REG, x | (1<<clock))
 		
 	
@@ -179,8 +179,7 @@ class Si5351_wut(object):
 		self.i2c.write8(Si5351_CLK0_CONFIG_REG, (int_mode<<6) | (pll_value<<5) | 0x0F)
 		
 		#Enable clock
-		reg = 0 #done so if I comment out I2C writes, reg still exists
-		#reg = self.i2c.readU8(Si5351_OUTPUT_ENABLE_REG)
+		reg = self.i2c.readU8(Si5351_OUTPUT_ENABLE_REG)
 		reg &= (1<<clock) #clearing the corresponding bit enables the output
 		self.i2c.write8(Si5351_OUTPUT_ENABLE_REG, reg)
 		
